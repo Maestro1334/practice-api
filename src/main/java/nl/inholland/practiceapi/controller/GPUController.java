@@ -29,4 +29,10 @@ public class GPUController {
         List<GPU> gpus = gpuService.getAllDDR6GPUs();
         return ResponseEntity.status(200).body(gpus);
     }
+
+    @RequestMapping(value = "clock", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllGPUsSortedByClock() {
+        List<GPU> gpus = gpuService.getAllGPUsSortedByClock();
+        return ResponseEntity.status(200).body(gpus);
+    }
 }
