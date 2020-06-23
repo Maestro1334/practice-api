@@ -1,7 +1,9 @@
 package nl.inholland.practiceapi.configuration;
 
 import nl.inholland.practiceapi.dao.GPURepository;
+import nl.inholland.practiceapi.dao.StockRepository;
 import nl.inholland.practiceapi.model.GPU;
+import nl.inholland.practiceapi.model.Stock;
 import nl.inholland.practiceapi.model.VRAMType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -10,14 +12,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class MyApplicationRunner implements ApplicationRunner {
 
     final GPURepository gpuRepository;
+    final StockRepository stockRepository;
 
-    public MyApplicationRunner(GPURepository gpuRepository) {
+    public MyApplicationRunner(GPURepository gpuRepository, StockRepository stockRepository) {
         this.gpuRepository = gpuRepository;
+        this.stockRepository = stockRepository;
     }
 
     @Override
@@ -34,5 +39,15 @@ public class MyApplicationRunner implements ApplicationRunner {
         gpuRepository.saveAll(gpus);
 
         gpuRepository.findAll().forEach(System.out::println);
+
+        gpuRepository.findAll().forEach(gpu -> stockRepository.save(new Stock(new Random().nextInt(50), gpu)));
+
+        stockRepository.findAll().forEach(System.out::println);
+
+        //stockRepository.getAllByQuantityGreaterThanEqualOrderByQuantity(25).forEach(System.out::println);
+
+        //System.out.println(stockRepository.getStockByGpu_Id(1000L));
+
+        //System.out.println(stockRepository.getTotalClockValueOfStockByGpuId(1000L));
     }
 }
