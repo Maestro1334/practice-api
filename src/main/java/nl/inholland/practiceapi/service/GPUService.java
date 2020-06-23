@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class GPUService {
-    List<GPU> gpus;
+    private final List<GPU> gpus;
 
     public GPUService() {
         this.gpus = Arrays.asList(
@@ -21,7 +23,21 @@ public class GPUService {
         );
     }
 
-    public List<GPU> getAllGpus() {
+    public List<GPU> getAllGPUs() {
+        sortGPUsByClock();
         return gpus;
+    }
+
+    private void sortGPUsByClock() {
+        // Sort GPUs by clock descending
+        gpus.sort((g1, g2) -> (int) (g2.getClock() - g1.getClock()));
+    }
+
+    public List<GPU> getAllDDR6GPUs() {
+        Stream<GPU> gpuStream = gpus.stream(); // Convert list to stream
+        List<GPU> ddr6Gpus = gpuStream.filter( // Filter on GDDR6 and convert back to list
+                a -> a.getVramType().equals(VRAMType.GDDR6))
+                .collect(Collectors.toList());
+        return ddr6Gpus;
     }
 }

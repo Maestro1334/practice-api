@@ -18,9 +18,15 @@ public class GPUController {
     @Autowired
     private GPUService gpuService;
 
-    @RequestMapping(method = RequestMethod.GET, produces =MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAllGPUs() {
-        List<GPU> gpus = gpuService.getAllGpus();
+        List<GPU> gpus = gpuService.getAllGPUs();
+        return ResponseEntity.status(200).body(gpus);
+    }
+
+    @RequestMapping(value = "ddr6", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllAmdGPUs() {
+        List<GPU> gpus = gpuService.getAllDDR6GPUs();
         return ResponseEntity.status(200).body(gpus);
     }
 }
