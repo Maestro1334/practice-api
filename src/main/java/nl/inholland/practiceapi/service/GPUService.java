@@ -37,4 +37,13 @@ public class GPUService {
                 a -> a.getVramType().equals(VRAMType.GDDR6))
                 .collect(Collectors.toList());
     }
+
+    public GPU findGPUById(long id) {
+        return gpuRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void addGPU(GPU gpu) {
+        gpuRepository.save(gpu);
+        System.out.println(gpu);
+    }
 }
