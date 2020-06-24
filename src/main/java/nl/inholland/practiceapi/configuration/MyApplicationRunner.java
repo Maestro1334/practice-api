@@ -1,11 +1,12 @@
 package nl.inholland.practiceapi.configuration;
 
+import nl.inholland.practiceapi.dao.ApiKeyRepository;
 import nl.inholland.practiceapi.dao.GPURepository;
 import nl.inholland.practiceapi.dao.StockRepository;
+import nl.inholland.practiceapi.model.ApiKey;
 import nl.inholland.practiceapi.model.GPU;
 import nl.inholland.practiceapi.model.Stock;
 import nl.inholland.practiceapi.model.VRAMType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,16 @@ import java.util.Random;
 @Component
 public class MyApplicationRunner implements ApplicationRunner {
 
-    final GPURepository gpuRepository;
-    final StockRepository stockRepository;
+    private final GPURepository gpuRepository;
+    private final StockRepository stockRepository;
+    private final PropertyConfiguration properties;
+    private final ApiKeyRepository apiKeyRepository;
 
-    public MyApplicationRunner(GPURepository gpuRepository, StockRepository stockRepository) {
+    public MyApplicationRunner(GPURepository gpuRepository, StockRepository stockRepository, PropertyConfiguration properties, ApiKeyRepository apiKeyRepository) {
         this.gpuRepository = gpuRepository;
         this.stockRepository = stockRepository;
+        this.properties = properties;
+        this.apiKeyRepository = apiKeyRepository;
     }
 
     @Override
@@ -43,6 +48,15 @@ public class MyApplicationRunner implements ApplicationRunner {
         gpuRepository.findAll().forEach(gpu -> stockRepository.save(new Stock(new Random().nextInt(50), gpu)));
 
         stockRepository.findAll().forEach(System.out::println);
+
+        apiKeyRepository.save(new ApiKey("1qX6Y51NUa"));
+
+        properties.setApplicationName("Practice-API");
+        System.out.println(properties.getApplicationName());
+
+        apiKeyRepository.findAll().forEach(System.out::println);
+
+
 
         //stockRepository.getAllByQuantityGreaterThanEqualOrderByQuantity(25).forEach(System.out::println);
 

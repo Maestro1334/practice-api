@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "practice-api.api-header-name",
+      "type": "java.lang.String",
+      "description": "Description for practice-api.api-header-name."
+    },
+    {
+      "name": "practice-api.token.header-name",
+      "type": "java.lang.String",
+      "description": "Description for practice-api.token.header-name."
+    }
+  ] }
